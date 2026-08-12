@@ -11,15 +11,23 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '/')));
 app.use(cors())
 
+// mongoose.connect(process.env.MONGO_URI, {
+//     user: process.env.MONGO_USERNAME,
+//     pass: process.env.MONGO_PASSWORD
+// })
+// .then(() => {
+//     console.log('MongoDB Connection Successful');
+// })
+// .catch((err) => {
+//     console.error('MongoDB Connection Error:', err);
+// });
+
+// app.js (excerpt)
 mongoose.connect(process.env.MONGO_URI, {
-    user: process.env.MONGO_USERNAME,
-    pass: process.env.MONGO_PASSWORD
-})
-.then(() => {
-    console.log('MongoDB Connection Successful');
-})
-.catch((err) => {
-    console.error('MongoDB Connection Error:', err);
+  user: process.env.MONGO_USERNAME,
+  pass: process.env.MONGO_PASSWORD,
+  useNewUrlParser: true,
+  useUnifiedTopology: true
 });
 
 var Schema = mongoose.Schema;
