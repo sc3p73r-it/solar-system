@@ -1,0 +1,5 @@
+<testsuite name="Testing Other Endpoints it should fetch Live Status it checks Liveness endpoint" time="0.003">
+  <testcase name="it should fetch Ready Status" timestamp="2023-10-12T10:34:16" tests="1" file="F:\Kodekloud-Wo">
+    <testcase name="Testing Other Endpoints it should fetch Ready Status it checks Readiness endpoint" time="0.0"/>
+  </testcase>
+</testsuite>
