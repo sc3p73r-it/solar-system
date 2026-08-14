@@ -1,9 +1,7 @@
 name: Archive Unit Test Reports
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
+  workflow_dispatch:
 
 jobs:
   unit-testing:
