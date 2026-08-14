@@ -39,4 +39,4 @@ jobs:
         run: npm test
 
       - name: Archive Test Result
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v7.0.1
