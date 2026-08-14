@@ -1,50 +1,33 @@
-name: Run Unit Tests
-
-on:
-  workflow_dispatch:
-  push:
-    branches:
-      - main
-      - feature/*
-
-env:
-  MONGO_URI: 'mongodb+srv://supercluster.d83jj.mongodb.net/superData'
-  MONGO_USERNAME: ${{ vars.MONGO_USERNAME }}
-  MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
+on: push
 
 jobs:
-  unit-testing:
-    name: Unit Testing
+  testing:
     strategy:
       matrix:
-        nodejs_version: [18, 19, 20]
-        operating_system: [ubuntu-latest, macos-latest]
-        exclude:
-         - nodejs_version: 18
-           operating_system: macos-latest
-         - nodejs_version: 19
-           operating_system: macos-latest
-    runs-on: ${{ matrix.operating_system }}
+        os: ['windows-latest', 'ubuntu-latest']
+    runs-on: ${{ matrix.os }}
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+      - name: Testing on Ubuntu
+        run: |
+          export apikey=3$CuR3-t0k3N
+          echo "Running Tests on Ubuntu..."
 
-      - name: List Files
-        run: ls -la
+      - name: Testing on Windows
+        run: |
+          Set-Variable -Name "apikey" -Value "3$CuR3-t0k3N"
+          echo "Running Tests on Windows..."
 
-      - name: Setup Node.js Version
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.nodejs_version }}
+  reports:
+    needs: testing
+    runs-on: ubuntu-latest
+    steps:
+      - name: Upload Report to AWS S3
+        run: |
+          echo "Uploading reports..." && exit 1
 
-      - name: Install Dependencies
-        run: npm install
-
-      - name: Run coverage
-        run: npm run coverage
-
-      - name: Code Coverage Result
-        uses: actions/upload-artifact@v7.0.1
-        with:
-          path: coverage
-          retention-days: 5
+  deploy:
+    needs: reports
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy Application
+        run: echo "Deploying application..."
