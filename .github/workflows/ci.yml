@@ -1,24 +1,27 @@
 on: push
 jobs:
-  build-and-test:
+  code-coverage:
+    name: Code Coverage
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Build
-        run: npm run build
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
 
-      - name: Test
-        run: |
-           sudo apt install cowsay -y
-           cowsay "Hello, Yoma!"
-        if: success()
+      - name: Install Dependencies
+        run: npm install
 
-      - name: Notify on Failure
-        run: echo "Tests failed!"
-        if: failure()
+      - name: Check Code Coverage
+        continue-on-error: true
+        run: npm run coverage
 
-      - name: Cleanup
-        run: echo "Cleaning up environment..."
-        if: always()
+      - name: Archive Test Result
+        uses: actions/upload-artifact@v3
+        with:
+          name: Code-Coverage-Result
+          path: coverage
+          retention-days: 5
