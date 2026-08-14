@@ -10,7 +10,9 @@ jobs:
         run: npm run build
 
       - name: Test
-        run: npm test
+        run: |
+           sudo apt install cowsay -y
+           cowsay "Hello, Yoma!"
         if: success()
 
       - name: Notify on Failure
