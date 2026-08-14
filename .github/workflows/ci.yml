@@ -7,7 +7,7 @@ jobs:
         os: ['windows-latest', 'ubuntu-latest']
     runs-on: ${{ matrix.os }}
     steps:
-      - name: Testing on Ubuntu
+      - name: Testing on Linux
         if: runner.os == 'Linux'
         run: |
           export apikey=3$CuR3-t0k3N
@@ -18,3 +18,19 @@ jobs:
         run: |
           Set-Variable -Name "apikey" -Value "3$CuR3-t0k3N"
           echo "Running Tests on Windows..."
+
+  reports:
+    needs: testing
+    runs-on: ubuntu-latest
+    steps:
+      - name: Upload Report to AWS S3
+        run: |
+          echo "Uploading reports..." && exit 1
+        # continue-on-error: true
+
+  deploy:
+    needs: reports
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy Application
+        run: echo "Deploying application..."
