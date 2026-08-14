@@ -2,6 +2,8 @@
 
 A simple HTML+MongoDB+NodeJS project to display Solar System and it's planets..
 
+[![.github/workflows/ci.yml](https://github.com/sc3p73r-it/solar-system/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/sc3p73r-it/solar-system/actions/workflows/ci.yml)
+
 ---
 ## Requirements
 
