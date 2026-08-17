@@ -32,7 +32,7 @@ jobs:
         run: npm run coverage
 
       - name: Archive Coverage Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v7.0.1
         with:
           name: coverage-report
           path: test-results.xml
