@@ -1,32 +1,43 @@
-on: push
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 jobs:
-  code-coverage:
-    runs-on: ${{ matrix.os }}
+  unit-testing:
+    name: Unit Testing
     strategy:
       matrix:
-        node: [13, 14]
-        os: [macos-latest, ubuntu-latest]
+        nodejs_version: [18, 20]
+        operating_system: [ubuntu-latest, macos-latest]
+        exclude:
+        - nodejs_version: 18
+          operating_system: macos-latest
+    runs-on: ${{ matrix.operating_system }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node.js ${{ matrix.nodejs_version }}
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: ${{ matrix.nodejs_version }}
+
+      - name: Cache NPM dependencies
+        uses: actions/cache@v6.1.0
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('package-lock.json') }}
 
       - name: Install Dependencies
         run: npm install
 
-      - name: Check Code Coverage
-        id: coverage-testing
+      - name: Run Unit Tests
         run: npm test
 
-      - name: Archive Test Result
-        # if: steps.coverage-testing.outcome == 'failure' || steps.coverage-testing.outcome == 'success'
+      - name: Archive Test Results
         if: always()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@v3
         with:
-          name: Code-Coverage-Result
+          name: mocha-test-results
           path: test-results.xml
-          retention-days: 5
