@@ -19,11 +19,13 @@ jobs:
         run: npm install
 
       - name: Check Code Coverage
+        id: coverage-testing
         run: npm run coverage
 
       - name: Archive Test Result
+        if: steps.coverage-testing.outcome == 'failure' || steps.coverage-testing.outcome == 'success'
         uses: actions/upload-artifact@v7
         with:
           name: Code-Coverage-Result
-          path: coverage
+          path: test-results.xml
           retention-days: 5
