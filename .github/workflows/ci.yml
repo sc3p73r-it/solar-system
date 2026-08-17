@@ -21,9 +21,10 @@ jobs:
       - name: Check Code Coverage
         id: coverage-testing
         run: npm test
-        
+
       - name: Archive Test Result
-        if: steps.coverage-testing.outcome == 'failure' || steps.coverage-testing.outcome == 'success'
+        # if: steps.coverage-testing.outcome == 'failure' || steps.coverage-testing.outcome == 'success'
+        if: always()
         uses: actions/upload-artifact@v7
         with:
           name: Code-Coverage-Result
